@@ -1,0 +1,13 @@
+# dependencies
+node_modules/
+*/node_modules/
+
+# env
+.env
+.env.local
+
+# build
+backend/dist
+frontend/.next
+frontend/out
+.vercel

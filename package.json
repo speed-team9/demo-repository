@@ -3,7 +3,13 @@
   "version": "0.2.0",
   "description": "A sample package.json",
   "dependencies": {
-    "@primer/css": "17.0.1"
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/mongoose": "^11.0.3",
+    "@primer/css": "17.0.1",
+    "mongoose": "^8.19.3"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^24.10.0"
+  }
 }
