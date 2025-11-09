@@ -4,7 +4,12 @@
     {
       "src": "backend/dist/main.js",
       "use": "@vercel/node",
-      "config": { "distDir": "backend/dist" }
+      "config": { 
+        "distDir": "backend/dist",
+        "buildCommand": "npm run build",
+        "outputDirectory": "backend/dist",
+        "entryPoint": "dist/main.js"
+      }
     },
     {
       "src": "frontend/package.json",
