@@ -8,7 +8,6 @@ const DB_URI =
   "mongodb+srv://speed_rw:boJMdQgj0ki6H3r0@cluster0.pr6jtjs.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 @Module({
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
   imports: [MongooseModule.forRoot(DB_URI), ArticleModule],
   controllers: [AppController],
   providers: [AppService],

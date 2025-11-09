@@ -1,19 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { Article } from './article.scheme';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { CreateArticleDto } from './create-article.dto';
-import { NotFoundException } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
+import { Article } from "./article.scheme";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { CreateArticleDto } from "./create-article.dto";
+import { NotFoundException } from "@nestjs/common";
 
 @Injectable()
 export class ArticleService {
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     @InjectModel(Article.name) private articleModel: Model<Article>,
   ) {}
 
   test(): string {
-    return 'article route testing';
+    return "article route testing";
   }
   async findAll(): Promise<Article[]> {
     return await this.articleModel.find().exec();
@@ -34,8 +33,8 @@ export class ArticleService {
       const createdArticle = new this.articleModel(createArticleDto);
       return await createdArticle.save(); // 确保有 await
     } catch (error) {
-      console.error('Error creating article:', error);
-      throw new Error('Unable to add this article');
+      console.error("Error creating article:", error);
+      throw new Error("Unable to add this article");
     }
   }
 
