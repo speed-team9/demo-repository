@@ -8,21 +8,9 @@ const NewDiscussion = () => {
   const [pubYear, setPubYear] = useState<number>(0);
   const [doi, setDoi] = useState("");
   const [summary, setSummary] = useState("");
-  // const [linkedDiscussion, setLinkedDiscussion] = useState("");
 
   const submitNewArticle = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    console.log(
-      JSON.stringify({
-        title,
-        authors,
-        source,
-        publication_year: pubYear,
-        doi,
-        claim: summary,
-      })
-    );
 
     const articleData = {
       title,
@@ -34,11 +22,9 @@ const NewDiscussion = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:8082/api/articles', {
+      const response = await fetch('/api/articles', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(articleData),
       });
 
@@ -52,7 +38,7 @@ const NewDiscussion = () => {
       console.log('Success:', result.message);
       alert(result.message);
 
-      // 重置表单
+      // reset form list
       setTitle('');
       setAuthors([]);
       setSource('');
@@ -67,7 +53,6 @@ const NewDiscussion = () => {
   };
 
   // Some helper methods for the authors array
-
   const addAuthor = () => {
     setAuthors(authors.concat([""]));
   };

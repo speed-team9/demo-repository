@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "backend/dist/main.js",
+      "use": "@vercel/node",
+      "config": { 
+        "distDir": "backend/dist",
+        "buildCommand": "npm run build",
+        "outputDirectory": "backend/dist",
+        "entryPoint": "dist/main.js"
+      }
+    },
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "backend/dist/main.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "frontend/$1"
+    }
+  ]
+}

@@ -8,21 +8,21 @@ import {
   Param,
   Post,
   Put,
-} from '@nestjs/common';
-import { ArticleService } from './article.service';
-import { CreateArticleDto } from './create-article.dto';
-import { error } from 'console';
+} from "@nestjs/common";
+import { ArticleService } from "./article.service";
+import { CreateArticleDto } from "./create-article.dto";
+import { error } from "console";
 
-@Controller('api/articles')
+@Controller("api/articles")
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
-  @Get('/test')
+  @Get("/test")
   test() {
     return this.articleService.test();
   }
   // Get all articles
-  @Get('/')
+  @Get("/")
   async findAll() {
     try {
       return this.articleService.findAll();
@@ -30,7 +30,7 @@ export class ArticleController {
       throw new HttpException(
         {
           status: HttpStatus.NOT_FOUND,
-          error: 'No Articles found',
+          error: "No Articles found",
         },
         HttpStatus.NOT_FOUND,
         { cause: error },
@@ -39,15 +39,15 @@ export class ArticleController {
   }
 
   // Get one article via id
-  @Get('/:id')
-  async findOne(@Param('id') id: string) {
+  @Get("/:id")
+  async findOne(@Param("id") id: string) {
     try {
       return this.articleService.findOne(id);
     } catch {
       throw new HttpException(
         {
           status: HttpStatus.NOT_FOUND,
-          error: 'No Article found',
+          error: "No Article found",
         },
         HttpStatus.NOT_FOUND,
         { cause: error },
@@ -56,18 +56,18 @@ export class ArticleController {
   }
 
   // Create/add a article
-  @Post('/')
+  @Post("/")
   async addArticle(@Body() createArticleDto: CreateArticleDto) {
     try {
       // check if data has been send correctly
-      console.log('Received article data:', createArticleDto);
+      console.log("Received article data:", createArticleDto);
       await this.articleService.create(createArticleDto);
-      return { message: 'Article added successfully' };
+      return { message: "Article added successfully" };
     } catch {
       throw new HttpException(
         {
           status: HttpStatus.BAD_REQUEST,
-          error: 'Unable to add this article',
+          error: "Unable to add this article",
         },
         HttpStatus.BAD_REQUEST,
         { cause: error },
@@ -76,19 +76,19 @@ export class ArticleController {
   }
 
   // Update a article
-  @Put('/:id')
+  @Put("/:id")
   async updateArticle(
-    @Param('id') id: string,
+    @Param("id") id: string,
     @Body() createArticleDto: CreateArticleDto,
   ) {
     try {
       await this.articleService.update(id, createArticleDto);
-      return { message: 'Article updated successfully' };
+      return { message: "Article updated successfully" };
     } catch {
       throw new HttpException(
         {
           status: HttpStatus.BAD_REQUEST,
-          error: 'Unable to update this article',
+          error: "Unable to update this article",
         },
         HttpStatus.BAD_REQUEST,
         { cause: error },
@@ -97,15 +97,15 @@ export class ArticleController {
   }
 
   // Delete a article via id
-  @Delete('/:id')
-  async deleteArticle(@Param('id') id: string) {
+  @Delete("/:id")
+  async deleteArticle(@Param("id") id: string) {
     try {
       return await this.articleService.delete(id);
     } catch {
       throw new HttpException(
         {
           status: HttpStatus.NOT_FOUND,
-          error: 'No such a article',
+          error: "No such a article",
         },
         HttpStatus.NOT_FOUND,
         { cause: error },
