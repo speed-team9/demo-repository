@@ -18,3 +18,7 @@ frontend/out/
 # OS
 .DS_Store
 .vercel
+
+backend/coverage/
+frontend/coverage/
+**/lcov-report/
