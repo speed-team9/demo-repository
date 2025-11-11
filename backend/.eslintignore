@@ -1,0 +1,2 @@
+# ignore serverless entrance
+src/api/index.js
