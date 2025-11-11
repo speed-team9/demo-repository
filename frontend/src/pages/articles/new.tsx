@@ -23,8 +23,8 @@ const NewDiscussion = () => {
   };
 
   try {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API || "https://speed-team9.vercel.app/api";
-    const fullUrl = `${apiBaseUrl}/articles`;
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API;
+    const fullUrl = `${apiBaseUrl}/api/articles`;
 
     const response = await fetch(fullUrl, {
       method: 'POST',
