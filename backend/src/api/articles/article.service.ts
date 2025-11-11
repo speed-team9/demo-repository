@@ -31,7 +31,7 @@ export class ArticleService {
   async create(createArticleDto: CreateArticleDto): Promise<Article> {
     try {
       const createdArticle = new this.articleModel(createArticleDto);
-      return await createdArticle.save(); // 确保有 await
+      return await createdArticle.save();
     } catch (error) {
       console.error("Error creating article:", error);
       throw new Error("Unable to add this article");
