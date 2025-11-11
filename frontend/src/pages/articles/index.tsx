@@ -17,6 +17,8 @@ type ArticlesProps = {
 };
 
 const Articles: NextPage<ArticlesProps> = ({ articles }) => {
+  console.log('Articles received in component:', articles);
+
   const headers: { key: keyof ArticlesInterface; label: string }[] = [
     { key: "title", label: "Title" },
     { key: "authors", label: "Authors" },
@@ -36,8 +38,8 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 };
 
 export const getStaticProps: GetStaticProps<ArticlesProps> = async () => {
-  // ① 同域优先（Vercel & 本地开发）
-  const baseUrl = process.env.NEXT_PUBLIC_API ?? ''; // 空串 = 同域
+
+  const baseUrl = process.env.NEXT_PUBLIC_API ?? '';
   const url = `${baseUrl}/api/articles`;
 
   try {
