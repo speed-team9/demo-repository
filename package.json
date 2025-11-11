@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@nestjs/platform-express": "^11.1.8",
+    "@vercel/node": "^5.5.5"
+  }
+}
