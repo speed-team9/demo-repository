@@ -1,4 +1,4 @@
-import { GetStaticProps, NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import SortableTable from "../../components/table/SortableTable";
 import axios from "axios";
 
@@ -37,10 +37,10 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps<ArticlesProps> = async () => {
-
-  const baseUrl = process.env.NEXT_PUBLIC_API ?? '';
+export const getServerSideProps: GetServerSideProps<ArticlesProps> = async () => {
+  const baseUrl = process.env.NEXT_PUBLIC_API;
   const url = `${baseUrl}/api/articles`;
+  console.log(url + "-------------------------");
 
   try {
     const response = await axios.get(url);
