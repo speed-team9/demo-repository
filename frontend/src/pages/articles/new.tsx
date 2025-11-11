@@ -9,48 +9,51 @@ const NewDiscussion = () => {
   const [doi, setDoi] = useState("");
   const [summary, setSummary] = useState("");
 
+  // submitNewArticle
   const submitNewArticle = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    const articleData = {
-      title,
-      authors,
-      source,
-      pubyear: pubYear.toString(),
-      doi,
-      claim: summary,
-    };
-
-    try {
-      const response = await fetch('/api/articles', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(articleData),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        console.error('Server response:', result);
-        throw new Error(result.error || 'Failed to submit article');
-      }
-
-      console.log('Success:', result.message);
-      alert(result.message);
-
-      // reset form list
-      setTitle('');
-      setAuthors([]);
-      setSource('');
-      setPubYear(0);
-      setDoi('');
-      setSummary('');
-
-    } catch (error: any) {
-      console.error('Error:', error);
-      alert(`Submission error: ${error.message}`);
-    }
+  const articleData = {
+    title,
+    authors,
+    source,
+    pubyear: pubYear.toString(),
+    doi,
+    claim: summary,
   };
+
+  try {
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API || "https://speed-team9.vercel.app/api";
+    const fullUrl = `${apiBaseUrl}/articles`;
+
+    const response = await fetch(fullUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(articleData),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      console.error('Server response:', result);
+      throw new Error(result.error || 'Failed to submit article');
+    }
+
+    console.log('Success:', result.message);
+    alert(result.message);
+
+    setTitle('');
+    setAuthors([]);
+    setSource('');
+    setPubYear(0);
+    setDoi('');
+    setSummary('');
+
+  } catch (error: any) {
+    console.error('Error:', error);
+    alert(`Submission error: ${error.message}`);
+  }
+};
 
   // Some helper methods for the authors array
   const addAuthor = () => {
