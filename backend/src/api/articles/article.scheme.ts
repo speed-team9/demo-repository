@@ -38,6 +38,9 @@ export class Article {
   @Prop({ enum: ["pending", "accepted", "rejected"], default: "pending" })
   reviewStatus?: "pending" | "accepted" | "rejected";
 
+  @Prop({ enum: ["pending", "accepted", "rejected"], default: "pending" })
+  status?: "pending" | "accepted" | "rejected";
+
   @Prop()
   reviewReason?: string;
 

@@ -8,6 +8,7 @@ export class CreateArticleDto {
   doi?: string;
   claim?: string;
   status?: string;
+  reviewstatus?: string;
   submitterId?: string;
   submitterName?: string;
   submitterUsername?: string;
