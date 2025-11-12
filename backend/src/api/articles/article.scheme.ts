@@ -1,3 +1,5 @@
+// article.scheme.ts
+
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument } from "mongoose";
 
@@ -24,11 +26,15 @@ export class Article {
   claim: string;
 
   @Prop()
+  submitterUsername: string;
+
+  @Prop()
   submitterId?: string;
 
   @Prop()
   submitterName?: string;
 
+  // article status
   @Prop({ enum: ["pending", "accepted", "rejected"], default: "pending" })
   reviewStatus?: "pending" | "accepted" | "rejected";
 

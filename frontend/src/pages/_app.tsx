@@ -18,6 +18,16 @@ function MyApp({ Component, pageProps }: AppProps) {
       router.replace('/login');
     } else {
       setAuthorized(true);
+      const roleBasedRoutes = {
+        submitter: '/submitter/my-submissions',
+        moderator: '/moderator/pending-articles',
+        analyst: '/analyst/approved-articles',
+        searcher: '/searcher/search',
+        administrator: '/administrator' // 重定向到 /administrator
+      };
+      if (router.pathname === '/' && role && roleBasedRoutes[role as keyof typeof roleBasedRoutes]) {
+        router.replace(roleBasedRoutes[role as keyof typeof roleBasedRoutes]);
+      }
     }
   }, [router.pathname]);
 

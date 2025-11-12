@@ -14,10 +14,8 @@ export class AuthController {
   }
 
   @Post("register")
+  @HttpCode(HttpStatus.CREATED)
   register(@Body() registerDto: RegisterDto) {
-    return {
-      message: "Register successfully",
-      data: this.authService.register(registerDto),
-    };
+    return this.authService.register(registerDto);
   }
 }

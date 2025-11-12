@@ -1,7 +1,9 @@
+// src/api/user/user.scheme.ts
+
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, HydratedDocument, Types } from "mongoose";
-import * as bcrypt from "bcryptjs";
+// import * as bcrypt from "bcryptjs";
 import { UserRole } from "../auth/dto/roles.enum";
 // import { Type } from "class-transformer";
 
@@ -23,7 +25,7 @@ export class User {
 
   @Prop({
     required: [true, "Password is not allowed be empty."],
-    select: false,
+    select: true,
   })
   password: string;
 
@@ -42,22 +44,3 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
-
-UserSchema.pre<UserDocument>("save", async function (next) {
-  if (!this.isModified("password")) return next();
-
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt); // 加密密码
-    next();
-  } catch (error) {
-    next(error as Error);
-  }
-});
-
-UserSchema.methods.comparePassword = async function (
-  this: UserDocument,
-  candidatePassword: string,
-): Promise<boolean> {
-  return bcrypt.compare(candidatePassword, this.password);
-};

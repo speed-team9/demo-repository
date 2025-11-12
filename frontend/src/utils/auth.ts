@@ -29,3 +29,43 @@ export interface Article {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export const NAV_CONFIG: Record<Role, NavItem[]> = {
+  searcher: [
+    { label: 'Home', href: '/' },
+    { label: 'Articles', href: '/articles' },
+  ],
+  submitter: [
+    { label: 'Home', href: '/' },
+    { label: 'Articles', href: '/articles' },
+    { label: 'New Article', href: '/articles/new' },
+  ],
+  moderator: [
+    { label: 'Home', href: '/' },
+    { label: 'Articles', href: '/articles' },
+    { label: 'Review', href: '/review' },
+  ],
+  analyst: [
+    { label: 'Home', href: '/' },
+    { label: 'Articles', href: '/articles' },
+    { label: 'Analysis', href: '/analysis' },
+  ],
+  administrator: [
+    { label: 'Home', href: '/' },
+    { label: 'Articles', href: '/articles' },
+    { label: 'Users', href: '/admin/users' },
+  ],
+};
+
+export interface NavItem {
+  label: string;
+  href: string;
+}
+
+export const SHOW_SUBMIT_NEW: Record<Role, boolean> = {
+  submitter: true,
+  moderator: false,
+  analyst: false,
+  administrator: false,
+  searcher: false,
+};

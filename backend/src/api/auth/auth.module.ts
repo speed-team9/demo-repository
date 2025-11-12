@@ -4,7 +4,7 @@ import { AuthService } from "./auth.service";
 import { UserModule } from "../user/user.module";
 
 @Module({
-  imports: [UserModule], // 依赖 User 模块
+  imports: [UserModule],
   controllers: [AuthController],
   providers: [AuthService],
 })

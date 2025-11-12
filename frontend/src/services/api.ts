@@ -8,8 +8,8 @@ const instance = axios.create({
 });
 
 export const authAPI = {
-  login: (data: LoginDto) => instance.post<User>('/auth/login', data).then((r) => r.data),
-  register: (data: RegisterDto) => instance.post<User>('/auth/register', data).then((r) => r.data),
+  login: (data: LoginDto) => instance.post<User>('/api/auth/login', data).then((r) => r.data),
+  register: (data: RegisterDto) => instance.post<User>('/api/auth/register', data).then((r) => r.data),
 };
 
 export const articleAPI = {

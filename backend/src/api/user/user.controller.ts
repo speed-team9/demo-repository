@@ -1,23 +1,39 @@
-import { Controller, Get, UseGuards } from "@nestjs/common";
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import {
+  Controller,
+  Get,
+  Put,
+  Body,
+  Param,
+  HttpException,
+  HttpStatus,
+} from "@nestjs/common";
 import { UserService } from "./user.service";
-import { CurrentUser } from "../../common/decorators/current-user.decorator";
-import { AuthGuard } from "../../common/guards/auth.guard";
-import { User } from "./user.schema";
 
 @Controller("api/users")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  /**
-   * 获取当前登录用户信息
-   * 需登录才能访问（AuthGuard 校验会话）
-   */
-  @Get("me")
-  @UseGuards(AuthGuard)
-  async getCurrentUser(@CurrentUser() user: User) {
-    return {
-      message: "查询成功",
-      data: user,
-    };
+  @Get()
+  async findAll() {
+    return await this.userService.findAll();
+  }
+
+  @Put(":username/role")
+  async updateRole(
+    @Param("username") username: string,
+    @Body() data: { role: string },
+  ) {
+    console.log(`Updating role for user: ${username}, new role: ${data.role}`);
+    const user = await this.userService.updateRoleByUsername(
+      username,
+      data.role,
+    );
+    if (!user) {
+      throw new HttpException("User not found", HttpStatus.NOT_FOUND);
+    }
+    console.log(`User role updated successfully:`, user);
+    return user;
   }
 }

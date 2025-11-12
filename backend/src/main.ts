@@ -11,6 +11,8 @@ async function bootstrap() {
     credentials: false,
   });
 
-  await app.listen(process.env.PORT || 8082);
+  const port = process.env.PORT || 8082;
+  await app.listen(port);
+  console.log(`Backend listening on ${port}`);
 }
 void bootstrap();
