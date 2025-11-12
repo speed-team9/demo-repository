@@ -1,3 +1,5 @@
+// src/pages/articles/index.tsx
+
 import { GetServerSideProps, NextPage } from "next";
 import SortableTable from "../../components/table/SortableTable";
 import axios from "axios";

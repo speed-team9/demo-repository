@@ -1,3 +1,5 @@
+// src/pages/articles/new.tsx
+
 import { FormEvent, useState } from "react";
 import formStyles from "../../styles/Form.module.scss";
 
