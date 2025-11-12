@@ -1,22 +1,45 @@
-import "../styles/globals.scss";
-import type { AppProps } from "next/app";
-// import { SessionProvider } from "next-auth/react";
-import PopulatedNavBar from "../components/PopulatedNavBar";
+// src/pages/_app.tsx
+import '../styles/globals.scss';
+import type { AppProps } from 'next/app';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import PopulatedNavBar from '../components/PopulatedNavBar';
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+  const [authorized, setAuthorized] = useState(false);
+
+  useEffect(() => {
+    const publicPages = ['/login', '/register'];
+    const role = typeof window !== 'undefined' ? localStorage.getItem('role') : null;
+    const onPublic = publicPages.includes(router.pathname);
+
+    if (!role && !onPublic) {
+      router.replace('/login');
+    } else {
+      setAuthorized(true);
+      const roleBasedRoutes = {
+        submitter: '/submitter/my-submissions',
+        moderator: '/moderator/pending-articles',
+        analyst: '/analyst/approved-articles',
+        searcher: '/searcher/search',
+        administrator: '/administrator' // 重定向到 /administrator
+      };
+      if (router.pathname === '/' && role && roleBasedRoutes[role as keyof typeof roleBasedRoutes]) {
+        router.replace(roleBasedRoutes[role as keyof typeof roleBasedRoutes]);
+      }
+    }
+  }, [router.pathname]);
+
+  if (!authorized) return null;
+
+  const showNav = !['/login', '/register'].includes(router.pathname);
   return (
     <>
-      <PopulatedNavBar />
+      {showNav && <PopulatedNavBar />}
       <Component {...pageProps} />
     </>
   );
-
-  // return (
-  //   <SessionProvider session={session}>
-  //     <PopulatedNavBar />
-  //     <Component {...pageProps} />
-  //   </SessionProvider>
-  // );
 }
 
 export default MyApp;

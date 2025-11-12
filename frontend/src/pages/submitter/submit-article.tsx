@@ -1,9 +1,8 @@
-// src/pages/articles/new.tsx
-
 import { FormEvent, useState } from "react";
-import formStyles from "../../styles/Form.module.scss";
+import { useRouter } from "next/router";
 
-const NewDiscussion = () => {
+const SubmitArticlePage = () => {
+  const router = useRouter();
   const [title, setTitle] = useState("");
   const [authors, setAuthors] = useState<string[]>([]);
   const [source, setSource] = useState("");
@@ -11,53 +10,52 @@ const NewDiscussion = () => {
   const [doi, setDoi] = useState("");
   const [summary, setSummary] = useState("");
 
-  // submitNewArticle
   const submitNewArticle = async (event: FormEvent<HTMLFormElement>) => {
-  event.preventDefault();
+    event.preventDefault();
 
-  const articleData = {
-    title,
-    authors,
-    source,
-    pubyear: pubYear.toString(),
-    doi,
-    claim: summary,
+    const articleData = {
+      title: title.trim(),
+      authors: authors.map(author => author.trim()).filter(author => author),
+      source: source.trim(),
+      pubyear: pubYear.toString(),
+      doi: doi.trim(),
+      claim: summary.trim(),
+      status: "pending"
+    };
+
+    console.log("Sending article data:", articleData);
+
+    try {
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API;
+      const fullUrl = `${apiBaseUrl}/api/articles`;
+
+      const response = await fetch(fullUrl, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(articleData),
+      });
+      
+      const result = await response.json();
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Server response error:", errorText);
+        throw new Error(`Failed to submit article: ${response.status} ${response.statusText}`);
+      }
+
+      console.log("Server response success:", result);
+
+      alert("Article submitted successfully!");
+
+    } catch (error: any) {
+      console.error("Submission error details:", error);
+      alert(`Submission error: ${error.message}`);
+    }
   };
 
-  try {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API;
-    const fullUrl = `${apiBaseUrl}/api/articles`;
-
-    const response = await fetch(fullUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(articleData),
-    });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      console.error('Server response:', result);
-      throw new Error(result.error || 'Failed to submit article');
-    }
-
-    console.log('Success:', result.message);
-    alert(result.message);
-
-    setTitle('');
-    setAuthors([]);
-    setSource('');
-    setPubYear(0);
-    setDoi('');
-    setSummary('');
-
-  } catch (error: any) {
-    console.error('Error:', error);
-    alert(`Submission error: ${error.message}`);
-  }
-};
-
-  // Some helper methods for the authors array
   const addAuthor = () => {
     setAuthors(authors.concat([""]));
   };
@@ -74,14 +72,12 @@ const NewDiscussion = () => {
     );
   };
 
-  // Return the full form
   return (
     <div className="container">
       <h1>New Article</h1>
-      <form className={formStyles.form} onSubmit={submitNewArticle}>
+      <form onSubmit={submitNewArticle}>
         <label htmlFor="title">Title:</label>
         <input
-          className={formStyles.formItem}
           type="text"
           name="title"
           id="title"
@@ -94,18 +90,15 @@ const NewDiscussion = () => {
         <label htmlFor="author">Authors:</label>
         {authors.map((author, index) => {
           return (
-            <div key={`author ${index}`} className={formStyles.arrayItem}>
+            <div key={`author ${index}`}>
               <input
                 type="text"
                 name="author"
                 value={author}
                 onChange={(event) => changeAuthor(index, event.target.value)}
-                className={formStyles.formItem}
               />
               <button
                 onClick={() => removeAuthor(index)}
-                className={formStyles.buttonItem}
-                style={{ marginLeft: "3rem" }}
                 type="button"
               >
                 -
@@ -116,8 +109,6 @@ const NewDiscussion = () => {
 
         <button
           onClick={() => addAuthor()}
-          className={formStyles.buttonItem}
-          style={{ marginLeft: "auto" }}
           type="button"
         >
           +
@@ -125,7 +116,6 @@ const NewDiscussion = () => {
 
         <label htmlFor="source">Source:</label>
         <input
-          className={formStyles.formItem}
           type="text"
           name="source"
           id="source"
@@ -137,7 +127,6 @@ const NewDiscussion = () => {
 
         <label htmlFor="pubYear">Publication Year:</label>
         <input
-          className={formStyles.formItem}
           type="number"
           name="pubYear"
           id="pubYear"
@@ -151,9 +140,9 @@ const NewDiscussion = () => {
             }
           }}
         />
+
         <label htmlFor="doi">DOI:</label>
         <input
-          className={formStyles.formItem}
           type="text"
           name="doi"
           id="doi"
@@ -165,13 +154,12 @@ const NewDiscussion = () => {
 
         <label htmlFor="summary">Summary:</label>
         <textarea
-          className={formStyles.formTextArea}
           name="summary"
           value={summary}
           onChange={(event) => setSummary(event.target.value)}
         />
 
-        <button className={formStyles.formItem} type="submit">
+        <button type="submit">
           Submit
         </button>
       </form>
@@ -179,4 +167,4 @@ const NewDiscussion = () => {
   );
 };
 
-export default NewDiscussion;
+export default SubmitArticlePage;

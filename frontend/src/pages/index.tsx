@@ -1,7 +1,14 @@
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import type { Role } from '../utils/constants';
+import { ROLE_ROUTE } from '../utils/constants';
+
 export default function Home() {
-  return (
-    <div className="container">
-      <h1>Software Practice Empirical Evidence Database (SPEED)</h1>
-    </div>
-  );
+  const router = useRouter();
+  useEffect(() => {
+    const role = localStorage.getItem('role') as Role | null;
+    if (role) router.replace(ROLE_ROUTE[role]);
+    else router.replace('/login');
+  }, [router]);
+  return null;
 }
