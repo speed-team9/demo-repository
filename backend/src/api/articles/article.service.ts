@@ -3,7 +3,7 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { Article } from "./article.scheme";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
@@ -169,5 +169,24 @@ export class ArticleService {
     status: "pending" | "accepted" | "rejected",
   ): Promise<Article[]> {
     return this.articleModel.find({ reviewStatus: status }).exec();
+  }
+
+  async updateRatingByTitle(title: string, rating: number) {
+    if (!title || typeof title !== "string") {
+      throw new BadRequestException("Valid title is required");
+    }
+    if (typeof rating !== "number" || rating < 1 || rating > 5) {
+      throw new BadRequestException("Rating must be a number between 1 and 5");
+    }
+
+    const updatedArticle = await this.articleModel
+      .findOneAndUpdate({ title }, { rating }, { new: true })
+      .exec();
+
+    if (!updatedArticle) {
+      throw new NotFoundException(`Article with title "${title}" not found`);
+    }
+
+    return updatedArticle;
   }
 }

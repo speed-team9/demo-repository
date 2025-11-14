@@ -57,6 +57,12 @@ export class ArticleController {
     return this.articleService.create(createArticleDto);
   }
 
+  @Put("rating")
+  async updateRating(@Body() data: { title: string; rating: number }) {
+    console.log("Received rating request:", data);
+    return this.articleService.updateRatingByTitle(data.title, data.rating);
+  }
+
   @Put(":id")
   async update(@Param("id") id: string, @Body() updateData: any) {
     console.log("=== BACKEND UPDATE START ===");
@@ -112,13 +118,5 @@ export class ArticleController {
   @Get("review/status")
   async findByReviewStatus(@Query("status") status: ReviewStatus) {
     return this.articleService.findByReviewStatus(status);
-  }
-
-  @Post(":id/analyze")
-  async analyze(
-    @Param("id") id: string,
-    @Body() data: { keyInsights: string },
-  ) {
-    return this.articleService.update(id, { keyInsights: data.keyInsights });
   }
 }
