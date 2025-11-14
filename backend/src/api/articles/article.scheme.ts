@@ -55,6 +55,14 @@ export class Article {
 
   @Prop()
   analyzedAt?: Date;
+
+  @Prop({
+    type: Number,
+    min: 1,
+    max: 5,
+    default: null,
+  })
+  rating?: number;
 }
 
 export const ArticleSchema = SchemaFactory.createForClass(Article);

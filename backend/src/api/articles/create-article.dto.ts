@@ -12,4 +12,5 @@ export class CreateArticleDto {
   submitterId?: string;
   submitterName?: string;
   submitterUsername?: string;
+  rating?: string;
 }
