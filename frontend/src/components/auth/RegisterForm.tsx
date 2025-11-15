@@ -10,10 +10,27 @@ export const RegisterForm: FC = () => {
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
-    const user = await authAPI.register(form);
-    localStorage.setItem('token', user.userId);
-    localStorage.setItem('role', user.role);
-    void router.replace(ROLE_ROUTE[user.role]);
+
+    if (form.username.length > 20) {
+      alert('Username must be no more than 20 characters long.');
+      return;
+    }
+
+    if (form.password.length < 6) {
+      alert('Password must be at least 6 characters long.');
+      return;
+    }
+
+    try {
+      const user = await authAPI.register(form);
+      localStorage.setItem('token', user.userId);
+      localStorage.setItem('role', user.role);
+      void router.replace(ROLE_ROUTE[user.role]);
+    } catch (error: any) {
+      if (error?.response?.status === 401) {
+        alert('Username already exists.');
+      }
+    }
   };
 
   return (
