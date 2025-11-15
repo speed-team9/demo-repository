@@ -8,11 +8,10 @@ import { UserController } from "./user.controller";
 
 @Module({
   imports: [
-    // 注册 MongoDB 模型
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   providers: [UserService],
   controllers: [UserController],
-  exports: [UserService], // 导出供 Auth 模块使用
+  exports: [UserService],
 })
 export class UserModule {}

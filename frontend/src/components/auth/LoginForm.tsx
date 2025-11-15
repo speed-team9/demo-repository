@@ -4,7 +4,6 @@ import { FC, FormEvent, useState } from 'react';
 import { useRouter } from 'next/router';
 import { authAPI } from '../../services/api';
 import { ROLE_ROUTE } from '../../utils/constants';
-import styles from './Auth.module.scss';
 
 export const LoginForm: FC = () => {
   const router = useRouter();
@@ -12,10 +11,33 @@ export const LoginForm: FC = () => {
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
-    const user = await authAPI.login(form);
-    localStorage.setItem('token', user.userId);
-    localStorage.setItem('role', user.role);
-    void router.replace(ROLE_ROUTE[user.role]);
+
+    if (!form.username.trim()) {
+      alert('Please enter your username.');
+      return;
+    }
+
+    if (!form.password.trim()) {
+      alert('Please enter your password.');
+      return;
+    }
+
+    if (form.password.length < 6) {
+      alert('Password must be at least 6 characters long.');
+      return;
+    }
+
+    try {
+      const user = await authAPI.login(form);
+      localStorage.setItem('token', user.userId);
+      localStorage.setItem('role', user.role);
+      void router.replace(ROLE_ROUTE[user.role]);
+    } catch (error: any) {
+      if (error?.response?.status === 401) {
+        alert('Incorrect username or password.');
+        void router.replace('/login');
+      }
+    }
   };
 
   return (
